@@ -1,9 +1,9 @@
 package mediadevicesstate
 
 import (
-	"github.com/antonfisher/go-media-devices-state/pkg/camera"
-	"github.com/antonfisher/go-media-devices-state/pkg/debug"
-	"github.com/antonfisher/go-media-devices-state/pkg/microphone"
+	"github.com/patcable/go-media-devices-state/pkg/camera"
+	"github.com/patcable/go-media-devices-state/pkg/debug"
+	"github.com/patcable/go-media-devices-state/pkg/microphone"
 )
 
 // IsCameraOn returns true is any camera in the system is ON
