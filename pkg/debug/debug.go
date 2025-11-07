@@ -3,8 +3,8 @@ package debug
 import (
 	"fmt"
 
-	"github.com/antonfisher/go-media-devices-state/pkg/camera"
-	"github.com/antonfisher/go-media-devices-state/pkg/microphone"
+	"github.com/patcable/go-media-devices-state/pkg/camera"
+	"github.com/patcable/go-media-devices-state/pkg/microphone"
 )
 
 func formatBool(value bool) string {

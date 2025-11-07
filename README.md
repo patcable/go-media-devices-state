@@ -1,6 +1,6 @@
 # go-media-devices-state
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/antonfisher/go-media-devices-state)](https://goreportcard.com/report/github.com/antonfisher/go-media-devices-state)
+[![Go Report Card](https://goreportcard.com/badge/github.com/patcable/go-media-devices-state)](https://goreportcard.com/report/github.com/patcable/go-media-devices-state)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 Go module to get camera/microphone state -- checks if camera/microphone is ON.
@@ -10,7 +10,7 @@ Module uses `cgo` to call native specific API on different platforms (currently 
 ## Installation
 
 ```shell
-go get github.com/antonfisher/go-media-devices-state
+go get github.com/patcable/go-media-devices-state
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ package main
 import (
 	"fmt"
 
-	mediaDevices "github.com/antonfisher/go-media-devices-state"
+	mediaDevices "github.com/patcable/go-media-devices-state"
 )
 
 func main() {
@@ -65,7 +65,7 @@ func Debug()
 Demo prints out all system video devices and their states (ON/OFF):
 
 ```shell
-git clone https://github.com/antonfisher/go-media-devices-state.git
+git clone https://github.com/patcable/go-media-devices-state.git
 cd go-media-devices-state
 go run -a cmd/demo.go
 ```

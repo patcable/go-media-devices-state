@@ -11,7 +11,7 @@ import "C"
 import (
 	"fmt"
 
-	"github.com/antonfisher/go-media-devices-state/pkg/common"
+	"github.com/patcable/go-media-devices-state/pkg/common"
 )
 
 // IsMicrophoneOn returns true is any microphone in the system is ON
