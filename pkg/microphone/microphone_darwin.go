@@ -15,9 +15,10 @@ import (
 )
 
 // IsMicrophoneOn returns true is any microphone in the system is ON
-func IsMicrophoneOn() (bool, error) {
+func IsMicrophoneOn(logging bool) (bool, error) {
 	isMicrophoneOn := C.int(0)
-	errCode := C.IsMicrophoneOn(&isMicrophoneOn)
+	printLogs := C.bool(logging)
+	errCode := C.IsMicrophoneOn(&isMicrophoneOn, printLogs)
 
 	if errCode != common.ErrNoErr {
 		var msg string

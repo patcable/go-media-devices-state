@@ -8,12 +8,12 @@ import (
 
 // IsCameraOn returns true is any camera in the system is ON
 func IsCameraOn() (bool, error) {
-	return camera.IsCameraOn()
+	return camera.IsCameraOn(false)
 }
 
 // IsMicrophoneOn returns true is any camera in the system is ON
 func IsMicrophoneOn() (bool, error) {
-	return microphone.IsMicrophoneOn()
+	return microphone.IsMicrophoneOn(false)
 }
 
 // Debug calls all available device functions and prints the results

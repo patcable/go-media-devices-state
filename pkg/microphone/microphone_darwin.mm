@@ -1,6 +1,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreAudio/AudioHardware.h>
 #import <Foundation/Foundation.h>
+#import <stdbool.h>
 
 // TODO how to use single `common/errno.mm` file for both packages?
 const int AD_ERR_NO_ERR = 0;
@@ -122,36 +123,46 @@ OSStatus getAudioDeviceIsUsed(AudioDeviceID device, int *isUsed) {
   return err;
 }
 
-OSStatus IsMicrophoneOn(int *on) {
-  NSLog(@"C.IsMicrophoneOn()");
+OSStatus IsMicrophoneOn(int *on, bool logging) {
+  if (logging) {
+    NSLog(@"C.IsMicrophoneOn()");
+  }
 
   OSStatus err;
 
   int count;
   err = getAudioDevicesCount(&count);
   if (err) {
-    NSLog(@"C.IsMicrophoneOn(): failed to get devices count, error: %d", err);
+    if (logging) {
+      NSLog(@"C.IsMicrophoneOn(): failed to get devices count, error: %d", err);
+    }
     return err;
   }
 
   AudioDeviceID *devices = (AudioDeviceID *)malloc(count * sizeof(*devices));
   if (devices == NULL) {
-    NSLog(@"C.IsMicrophoneOn(): failed to allocate memory, device count: %d",
-          count);
+    if (logging) {
+      NSLog(@"C.IsMicrophoneOn(): failed to allocate memory, device count: %d",
+            count);
+    }
     return AD_ERR_OUT_OF_MEMORY;
   }
 
   err = getAudioDevices(count, devices);
   if (err) {
-    NSLog(@"C.IsMicrophoneOn(): failed to get devices, error: %d", err);
+    if (logging) {
+      NSLog(@"C.IsMicrophoneOn(): failed to get devices, error: %d", err);
+    }
     free(devices);
     devices = NULL;
     return err;
   }
 
-  NSLog(@"C.IsMicrophoneOn(): found devices: %d", count);
-  if (count > 0) {
-    NSLog(@"C.IsMicrophoneOn(): # | is used | description");
+  if (logging) {
+    NSLog(@"C.IsMicrophoneOn(): found devices: %d", count);
+    if (count > 0) {
+      NSLog(@"C.IsMicrophoneOn(): # | is used | description");
+    }
   }
 
   int failedDeviceCount = 0;
@@ -164,8 +175,10 @@ OSStatus IsMicrophoneOn(int *on) {
     err = getAudioDeviceUID(device, &uid);
     if (err) {
       failedDeviceCount++;
-      NSLog(@"C.IsMicrophoneOn(): %d | -       | failed to get device UID: %d",
-            i, err);
+      if (logging) {
+        NSLog(@"C.IsMicrophoneOn(): %d | -       | failed to get device UID: %d",
+              i, err);
+      }
       continue;
     }
 
@@ -178,18 +191,20 @@ OSStatus IsMicrophoneOn(int *on) {
     err = getAudioDeviceIsUsed(device, &isDeviceUsed);
     if (err) {
       failedDeviceCount++;
-      NSLog(
-          @"C.IsMicrophoneOn(): %d | -       | failed to get device state: %d",
-          i, err);
+      if (logging) {
+        NSLog(
+            @"C.IsMicrophoneOn(): %d | -       | failed to get device state: %d",
+            i, err);
+      }
       continue;
     }
 
     NSString *description;
     getAudioDeviceDescription(uid, &description);
-
-    NSLog(@"C.IsMicrophoneOn(): %d | %s     | %@", i,
-          isDeviceUsed == 0 ? "NO " : "YES", description);
-
+    if (logging) {
+      NSLog(@"C.IsMicrophoneOn(): %d | %s     | %@", i,
+            isDeviceUsed == 0 ? "NO " : "YES", description);
+    }
     if (isDeviceUsed != 0) {
       *on = 1;
     }
@@ -198,12 +213,13 @@ OSStatus IsMicrophoneOn(int *on) {
   free(devices);
   devices = NULL;
 
-  NSLog(@"C.IsMicrophoneOn(): failed devices: %d", failedDeviceCount);
-  NSLog(@"C.IsMicrophoneOn(): ignored devices (speakers): %d",
-        ignoredDeviceCount);
-  NSLog(@"C.IsMicrophoneOn(): is any microphone on: %s",
-        *on == 0 ? "NO" : "YES");
-
+  if (logging) {
+    NSLog(@"C.IsMicrophoneOn(): failed devices: %d", failedDeviceCount);
+    NSLog(@"C.IsMicrophoneOn(): ignored devices (speakers): %d",
+          ignoredDeviceCount);
+    NSLog(@"C.IsMicrophoneOn(): is any microphone on: %s",
+          *on == 0 ? "NO" : "YES");
+  }
   if (failedDeviceCount == count) {
     return AD_ERR_ALL_DEVICES_FAILED;
   }
